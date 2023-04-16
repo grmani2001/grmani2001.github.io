@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Input to CSV Example</title>
+	<script>
+		var data = [];
 
+		function addData() {
+			var name = document.getElementById("name").value;
+			var age = document.getElementById("age").value;
+			var country = document.getElementById("country").value;
+
+			data.push([name, age, country]);
+
+			document.getElementById("name").value = "";
+			document.getElementById("age").value = "";
+			document.getElementById("country").value = "";
+
+			updateTable();
+		}
+
+		function removeData(index) {
+			data.splice(index, 1);
+			updateTable();
+		}
+
+		function updateTable() {
+			var tableBody = document.getElementById("tableBody");
+			tableBody.innerHTML = "";
+
+			for (var i = 0; i < data.length; i++) {
+				var row = document.createElement("tr");
+
+				var nameCell = document.createElement("td");
+				nameCell.innerHTML = data[i][0];
+				row.appendChild(nameCell);
+
+				var ageCell = document.createElement("td");
+				ageCell.innerHTML = data[i][1];
+				row.appendChild(ageCell);
+
+				var countryCell = document.createElement("td");
+				countryCell.innerHTML = data[i][2];
+				row.appendChild(countryCell);
+
+				var removeCell = document.createElement("td");
+				var removeButton = document.createElement("button");
+				removeButton.innerHTML = "Remove";
+				removeButton.onclick = (function(index) {
+					return function() {
+						removeData(index);
+					}
+				})(i);
+				removeCell.appendChild(removeButton);
+				row.appendChild(removeCell);
+
+				tableBody.appendChild(row);
+			}
+		}
+
+		function downloadCSV() {
+			var csv = "Name,Age,Country\n";
+
+			for (var i = 0; i < data.length; i++) {
+				csv += data[i][0] + "," + data[i][1] + "," + data[i][2] + "\n";
+			}
+
+			var encodedCSV = encodeURIComponent(csv);
+			var downloadLink = document.createElement("a");
+			downloadLink.setAttribute("href", "data:text/csv;charset=utf-8," + encodedCSV);
+			downloadLink.setAttribute("download", "data.csv");
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+		}
+	</script>
+</head>
+<body>
+	<h1>Input to CSV Example</h1>
+	<label for="name">Name:</label>
+	<input type="text" id="name"><br>
+
+	<label for="age">Age:</label>
+	<input type="number" id="age"><br>
+
+	<label for="country">Country:</label>
+	<input type="text" id="country"><br>
+
+	<button onclick="addData()">Add</button>
+	<button onclick="downloadCSV()">Download CSV</button>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Age</th>
+				<th>Country</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="tableBody">
+		</tbody>
+	</table>
+</body>
+</html>

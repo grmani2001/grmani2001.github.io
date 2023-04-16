@@ -1,53 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Scientific Calculator</title>
+	<title>Input Form</title>
 </head>
 <body>
-	<h1>Scientific Calculator</h1>
+	<h2>Please enter your information:</h2>
 	<form>
-		<input type="text" id="result" name="result" readonly>
-		<br>
-		<input type="button" value="1" onclick="updateResult(1)">
-		<input type="button" value="2" onclick="updateResult(2)">
-		<input type="button" value="3" onclick="updateResult(3)">
-		<input type="button" value="+" onclick="updateResult('+')">
-		<br>
-		<input type="button" value="4" onclick="updateResult(4)">
-		<input type="button" value="5" onclick="updateResult(5)">
-		<input type="button" value="6" onclick="updateResult(6)">
-		<input type="button" value="-" onclick="updateResult('-')">
-		<br>
-		<input type="button" value="7" onclick="updateResult(7)">
-		<input type="button" value="8" onclick="updateResult(8)">
-		<input type="button" value="9" onclick="updateResult(9)">
-		<input type="button" value="*" onclick="updateResult('*')">
-		<br>
-		<input type="button" value="0" onclick="updateResult(0)">
-		<input type="button" value="." onclick="updateResult('.')">
-		<input type="button" value="=" onclick="calculateResult()">
-		<input type="button" value="/" onclick="updateResult('/')">
-		<br>
-		<input type="button" value="sin" onclick="updateResult('Math.sin(')">
-		<input type="button" value="cos" onclick="updateResult('Math.cos(')">
-		<input type="button" value="tan" onclick="updateResult('Math.tan(')">
-		<input type="button" value="sqrt" onclick="updateResult('Math.sqrt(')">
-		<br>
-		<input type="button" value="Clear" onclick="clearResult()">
+		<label for="name">Name:</label>
+		<input type="text" id="name" name="name"><br><br>
+		<label for="age">Age:</label>
+		<input type="number" id="age" name="age"><br><br>
+		<label for="country">Country:</label>
+		<input type="text" id="country" name="country"><br><br>
+		<button type="button" onclick="storeData()">Submit</button>
 	</form>
+	<div id="output"></div>
 	<script>
-		function updateResult(value) {
-			document.getElementById("result").value += value;
+		function storeData() {
+			var name = document.getElementById("name").value;
+			var age = document.getElementById("age").value;
+			var country = document.getElementById("country").value;
+			localStorage.setItem("name", name);
+			localStorage.setItem("age", age);
+			localStorage.setItem("country", country);
+			showOutput();
 		}
-		
-		function calculateResult() {
-			var expression = document.getElementById("result").value;
-			var result = eval(expression);
-			document.getElementById("result").value = result;
-		}
-		
-		function clearResult() {
-			document.getElementById("result").value = "";
+		function showOutput() {
+			var name = localStorage.getItem("name");
+			var age = localStorage.getItem("age");
+			var country = localStorage.getItem("country");
+			var output = document.getElementById("output");
+			output.innerHTML = "Name: " + name + "<br>" + "Age: " + age + "<br>" + "Country: " + country;
 		}
 	</script>
 </body>
